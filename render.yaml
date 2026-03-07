@@ -12,7 +12,7 @@ services:
       - key: SUPABASE_SERVICE_KEY
         sync: false
       - key: ALLOWED_ORIGINS
-        value: '["https://contabilidad-web.vercel.app"]'
+        value: 'https://contabilidad-web.vercel.app'
       - key: ENVIRONMENT
         value: production
       - key: LOG_LEVEL
