@@ -80,6 +80,8 @@ class ListExpensesUseCase:
                     description=e.description,
                     expense_date=e.expense_date,
                     created_at=e.created_at,
+                    transaction_type=e.transaction_type,
+                    color=e.color,
                 )
                 for e in items
             ],

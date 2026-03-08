@@ -16,6 +16,8 @@ class Expense:
     amount: Money
     description: str
     expense_date: date
+    transaction_type: str = "expense"  # "expense" | "income"
+    color: str | None = None
     is_recurring: bool = False
     recurring_expense_id: UUID | None = None
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
@@ -23,11 +25,13 @@ class Expense:
 
     def validate(self) -> None:
         if self.amount.value <= Decimal(0):
-            raise ValidationException("Expense amount must be positive")
+            raise ValidationException("Amount must be positive")
         if self.expense_date > date.today():
-            raise ValidationException("Expense date cannot be in the future")
+            raise ValidationException("Date cannot be in the future")
         if not self.description.strip():
-            raise ValidationException("Expense must have a description")
+            raise ValidationException("Description is required")
+        if self.transaction_type not in ("expense", "income"):
+            raise ValidationException("transaction_type must be 'expense' or 'income'")
 
     def is_editable_by(self, user_id: UUID) -> bool:
         return self.created_by == user_id

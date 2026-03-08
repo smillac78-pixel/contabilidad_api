@@ -13,6 +13,8 @@ class CreateExpenseInput:
     currency: str
     description: str
     expense_date: date
+    transaction_type: str = "expense"
+    color: str | None = None
 
 
 @dataclass(frozen=True)
@@ -27,3 +29,5 @@ class ExpenseOutput:
     description: str
     expense_date: date
     created_at: datetime
+    transaction_type: str = "expense"
+    color: str | None = None

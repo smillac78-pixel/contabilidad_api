@@ -11,6 +11,8 @@ class UpdateExpenseRequest(BaseModel):
     currency: str = Field(default="EUR", pattern=r"^[A-Z]{3}$")
     description: str = Field(min_length=1, max_length=500)
     expense_date: date
+    transaction_type: str = Field(default="expense", pattern=r"^(expense|income)$")
+    color: str | None = Field(default=None, pattern=r"^#[0-9a-fA-F]{6}$")
 
 
 class CreateExpenseRequest(BaseModel):
@@ -19,6 +21,8 @@ class CreateExpenseRequest(BaseModel):
     currency: str = Field(default="EUR", pattern=r"^[A-Z]{3}$")
     description: str = Field(min_length=1, max_length=500)
     expense_date: date
+    transaction_type: str = Field(default="expense", pattern=r"^(expense|income)$")
+    color: str | None = Field(default=None, pattern=r"^#[0-9a-fA-F]{6}$")
 
 
 class ExpenseResponse(BaseModel):
@@ -32,6 +36,8 @@ class ExpenseResponse(BaseModel):
     description: str
     expense_date: date
     created_at: datetime
+    transaction_type: str = "expense"
+    color: str | None = None
 
 
 class PaginatedExpensesResponse(BaseModel):

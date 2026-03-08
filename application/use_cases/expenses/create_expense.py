@@ -46,6 +46,8 @@ class CreateExpenseUseCase:
             amount=Money(input.amount, input.currency),
             description=input.description,
             expense_date=input.expense_date,
+            transaction_type=input.transaction_type,
+            color=input.color,
         )
         expense.validate()
 
@@ -63,4 +65,6 @@ class CreateExpenseUseCase:
             description=saved.description,
             expense_date=saved.expense_date,
             created_at=saved.created_at,
+            transaction_type=saved.transaction_type,
+            color=saved.color,
         )

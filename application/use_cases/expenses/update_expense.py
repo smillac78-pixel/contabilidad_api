@@ -20,6 +20,8 @@ class UpdateExpenseInput:
     currency: str
     description: str
     expense_date: date
+    transaction_type: str = "expense"
+    color: str | None = None
 
 
 class UpdateExpenseUseCase:
@@ -47,6 +49,8 @@ class UpdateExpenseUseCase:
         expense.category_id = input.category_id
         expense.description = input.description
         expense.expense_date = input.expense_date
+        expense.transaction_type = input.transaction_type
+        expense.color = input.color
         expense.validate()
 
         saved = await self._expense_repo.save(expense)
@@ -62,4 +66,6 @@ class UpdateExpenseUseCase:
             description=saved.description,
             expense_date=saved.expense_date,
             created_at=saved.created_at,
+            transaction_type=saved.transaction_type,
+            color=saved.color,
         )

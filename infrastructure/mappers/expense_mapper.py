@@ -18,6 +18,8 @@ class ExpenseMapper:
             amount=Money(Decimal(str(record["amount"])), record["currency"]),
             description=record["description"],
             expense_date=date.fromisoformat(record["expense_date"]),
+            transaction_type=record.get("transaction_type", "expense"),
+            color=record.get("color"),
             is_recurring=record.get("is_recurring", False),
             recurring_expense_id=(
                 UUID(record["recurring_expense_id"])
@@ -39,6 +41,8 @@ class ExpenseMapper:
             "currency": expense.amount.currency,
             "description": expense.description,
             "expense_date": expense.expense_date.isoformat(),
+            "transaction_type": expense.transaction_type,
+            "color": expense.color,
             "is_recurring": expense.is_recurring,
             "recurring_expense_id": (
                 str(expense.recurring_expense_id)

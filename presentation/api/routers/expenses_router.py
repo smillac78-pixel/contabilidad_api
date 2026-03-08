@@ -54,6 +54,8 @@ async def create_expense(
                 currency=request.currency,
                 description=request.description,
                 expense_date=request.expense_date,
+                transaction_type=request.transaction_type,
+                color=request.color,
             )
         )
         return ExpenseResponse(**result.__dict__)
@@ -128,6 +130,8 @@ async def update_expense(
                 currency=request.currency,
                 description=request.description,
                 expense_date=request.expense_date,
+                transaction_type=request.transaction_type,
+                color=request.color,
             )
         )
         return ExpenseResponse(**result.__dict__)
