@@ -72,7 +72,7 @@ async def list_expenses(
     to_date: date | None = Query(default=None),
     category_id: UUID | None = Query(default=None),
     page: int = Query(default=1, ge=1),
-    page_size: int = Query(default=20, ge=1, le=100),
+    page_size: int = Query(default=20, ge=1, le=1000),
     user_id: UUID = Depends(get_current_user_row_id),
     family_id: UUID = Depends(get_current_family_id),
     use_case: ListExpensesUseCase = Depends(get_list_expenses_use_case),
