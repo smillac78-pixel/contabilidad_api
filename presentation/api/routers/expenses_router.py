@@ -21,7 +21,7 @@ from presentation.api.schemas.expense_schemas import (
 from presentation.dependencies import (
     get_create_expense_use_case,
     get_current_family_id,
-    get_current_user_id,
+    get_current_user_row_id,
     get_delete_expense_use_case,
     get_list_expenses_use_case,
 )
@@ -37,7 +37,7 @@ router = APIRouter(prefix="/expenses", tags=["expenses"])
 )
 async def create_expense(
     request: CreateExpenseRequest,
-    user_id: UUID = Depends(get_current_user_id),
+    user_id: UUID = Depends(get_current_user_row_id),
     family_id: UUID = Depends(get_current_family_id),
     use_case: CreateExpenseUseCase = Depends(get_create_expense_use_case),
 ):
@@ -73,7 +73,7 @@ async def list_expenses(
     category_id: UUID | None = Query(default=None),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=20, ge=1, le=100),
-    user_id: UUID = Depends(get_current_user_id),
+    user_id: UUID = Depends(get_current_user_row_id),
     family_id: UUID = Depends(get_current_family_id),
     use_case: ListExpensesUseCase = Depends(get_list_expenses_use_case),
 ):
@@ -109,7 +109,7 @@ async def list_expenses(
 )
 async def delete_expense(
     expense_id: UUID,
-    user_id: UUID = Depends(get_current_user_id),
+    user_id: UUID = Depends(get_current_user_row_id),
     use_case: DeleteExpenseUseCase = Depends(get_delete_expense_use_case),
 ):
     try:

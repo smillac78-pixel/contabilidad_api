@@ -9,7 +9,7 @@ from presentation.api.schemas.category_schemas import CategoryResponse, CreateCa
 from presentation.dependencies import (
     get_create_category_use_case,
     get_current_family_id,
-    get_current_user_id,
+    get_current_user_row_id,
     get_list_categories_use_case,
 )
 
@@ -24,7 +24,7 @@ router = APIRouter(prefix="/categories", tags=["categories"])
 )
 async def create_category(
     request: CreateCategoryRequest,
-    user_id: UUID = Depends(get_current_user_id),
+    user_id: UUID = Depends(get_current_user_row_id),
     family_id: UUID = Depends(get_current_family_id),
     use_case: CreateCategoryUseCase = Depends(get_create_category_use_case),
 ):
@@ -53,7 +53,7 @@ async def create_category(
     summary="Listar categorías de la familia",
 )
 async def list_categories(
-    user_id: UUID = Depends(get_current_user_id),
+    user_id: UUID = Depends(get_current_user_row_id),
     family_id: UUID = Depends(get_current_family_id),
     use_case: ListCategoriesUseCase = Depends(get_list_categories_use_case),
 ):

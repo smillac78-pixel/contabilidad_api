@@ -40,7 +40,7 @@ async def get_current_family_id(
     response = (
         await client.table("users")
         .select("family_id")
-        .eq("id", str(user_id))
+        .eq("auth_id", str(user_id))
         .limit(1)
         .execute()
     )
@@ -50,6 +50,26 @@ async def get_current_family_id(
             detail="User does not belong to a family",
         )
     return UUID(response.data[0]["family_id"])
+
+
+async def get_current_user_row_id(
+    user_id: UUID = Depends(get_current_user_id),
+) -> UUID:
+    """Returns the users.id (not auth_id) for the current authenticated user."""
+    client = await get_supabase_client()
+    response = (
+        await client.table("users")
+        .select("id")
+        .eq("auth_id", str(user_id))
+        .limit(1)
+        .execute()
+    )
+    if not response.data:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User profile not found",
+        )
+    return UUID(response.data[0]["id"])
 
 
 # --- Repositorios ---
