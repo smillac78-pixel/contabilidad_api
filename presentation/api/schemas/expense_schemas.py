@@ -19,7 +19,7 @@ class ExpenseResponse(BaseModel):
     category_id: UUID
     category_name: str
     created_by: UUID
-    amount: Decimal
+    amount: float
     currency: str
     description: str
     expense_date: date
