@@ -13,6 +13,7 @@ class Category:
     icon: str | None = None
     color: str | None = None
     is_system: bool = False
+    transaction_type: str = "expense"
     created_at: datetime | None = None
 
     def rename(self, new_name: str) -> None:

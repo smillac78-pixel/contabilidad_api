@@ -9,6 +9,7 @@ class CreateCategoryInput:
     name: str
     icon: str | None = None
     color: str | None = None
+    transaction_type: str = "expense"
 
 
 @dataclass(frozen=True)
@@ -19,3 +20,4 @@ class CategoryOutput:
     icon: str | None
     color: str | None
     is_system: bool
+    transaction_type: str = "expense"

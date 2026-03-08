@@ -37,6 +37,7 @@ class CreateCategoryUseCase:
             icon=input.icon,
             color=input.color,
             is_system=False,
+            transaction_type=input.transaction_type,
         )
         saved = await self._category_repo.save(category)
 
@@ -47,6 +48,7 @@ class CreateCategoryUseCase:
             icon=saved.icon,
             color=saved.color,
             is_system=saved.is_system,
+            transaction_type=saved.transaction_type,
         )
 
 
@@ -75,6 +77,7 @@ class ListCategoriesUseCase:
                 icon=c.icon,
                 color=c.color,
                 is_system=c.is_system,
+                transaction_type=c.transaction_type,
             )
             for c in categories
         ]

@@ -20,6 +20,7 @@ class SupabaseCategoryRepository(CategoryRepository):
             "icon": category.icon,
             "color": category.color,
             "is_system": category.is_system,
+            "transaction_type": category.transaction_type,
         }
         existing = await self.find_by_id(category.id)
         if existing:
@@ -76,4 +77,5 @@ class SupabaseCategoryRepository(CategoryRepository):
             icon=record.get("icon"),
             color=record.get("color"),
             is_system=record.get("is_system", False),
+            transaction_type=record.get("transaction_type", "expense"),
         )
