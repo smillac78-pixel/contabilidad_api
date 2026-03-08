@@ -9,6 +9,7 @@ from application.use_cases.categories.create_category import CreateCategoryUseCa
 from application.use_cases.expenses.create_expense import CreateExpenseUseCase
 from application.use_cases.expenses.delete_expense import DeleteExpenseUseCase
 from application.use_cases.expenses.list_expenses import ListExpensesUseCase
+from application.use_cases.expenses.update_expense import UpdateExpenseUseCase
 from infrastructure.database.supabase_client import get_supabase_client
 from infrastructure.repositories.supabase_category_repository import SupabaseCategoryRepository
 from infrastructure.repositories.supabase_expense_repository import SupabaseExpenseRepository
@@ -112,6 +113,13 @@ async def get_delete_expense_use_case(
     family_repo: SupabaseFamilyRepository = Depends(get_family_repository),
 ) -> DeleteExpenseUseCase:
     return DeleteExpenseUseCase(expense_repo, family_repo)
+
+
+async def get_update_expense_use_case(
+    expense_repo: SupabaseExpenseRepository = Depends(get_expense_repository),
+    category_repo: SupabaseCategoryRepository = Depends(get_category_repository),
+) -> UpdateExpenseUseCase:
+    return UpdateExpenseUseCase(expense_repo, category_repo)
 
 
 # --- Casos de uso: Categories ---

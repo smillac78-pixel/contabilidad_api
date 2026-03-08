@@ -7,6 +7,7 @@ from application.dto.expense_dto import CreateExpenseInput
 from application.use_cases.expenses.create_expense import CreateExpenseUseCase
 from application.use_cases.expenses.delete_expense import DeleteExpenseInput, DeleteExpenseUseCase
 from application.use_cases.expenses.list_expenses import ListExpensesInput, ListExpensesUseCase
+from application.use_cases.expenses.update_expense import UpdateExpenseInput, UpdateExpenseUseCase
 from domain.exceptions import (
     DomainException,
     EntityNotFoundException,
@@ -17,6 +18,7 @@ from presentation.api.schemas.expense_schemas import (
     CreateExpenseRequest,
     ExpenseResponse,
     PaginatedExpensesResponse,
+    UpdateExpenseRequest,
 )
 from presentation.dependencies import (
     get_create_expense_use_case,
@@ -24,6 +26,7 @@ from presentation.dependencies import (
     get_current_user_row_id,
     get_delete_expense_use_case,
     get_list_expenses_use_case,
+    get_update_expense_use_case,
 )
 
 router = APIRouter(prefix="/expenses", tags=["expenses"])
@@ -100,6 +103,40 @@ async def list_expenses(
         raise HTTPException(status_code=404, detail=str(e))
     except UnauthorizedException as e:
         raise HTTPException(status_code=403, detail=str(e))
+
+
+@router.put(
+    "/{expense_id}",
+    response_model=ExpenseResponse,
+    summary="Actualizar un gasto",
+)
+async def update_expense(
+    expense_id: UUID,
+    request: UpdateExpenseRequest,
+    user_id: UUID = Depends(get_current_user_row_id),
+    family_id: UUID = Depends(get_current_family_id),
+    use_case: UpdateExpenseUseCase = Depends(get_update_expense_use_case),
+):
+    try:
+        result = await use_case.execute(
+            UpdateExpenseInput(
+                expense_id=expense_id,
+                requested_by=user_id,
+                family_id=family_id,
+                category_id=request.category_id,
+                amount=request.amount,
+                currency=request.currency,
+                description=request.description,
+                expense_date=request.expense_date,
+            )
+        )
+        return ExpenseResponse(**result.__dict__)
+    except EntityNotFoundException as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except UnauthorizedException as e:
+        raise HTTPException(status_code=403, detail=str(e))
+    except (ValidationException, DomainException) as e:
+        raise HTTPException(status_code=422, detail=str(e))
 
 
 @router.delete(

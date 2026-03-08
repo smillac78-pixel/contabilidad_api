@@ -5,6 +5,14 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 
+class UpdateExpenseRequest(BaseModel):
+    category_id: UUID
+    amount: Decimal = Field(gt=0, decimal_places=2)
+    currency: str = Field(default="EUR", pattern=r"^[A-Z]{3}$")
+    description: str = Field(min_length=1, max_length=500)
+    expense_date: date
+
+
 class CreateExpenseRequest(BaseModel):
     category_id: UUID
     amount: Decimal = Field(gt=0, decimal_places=2)
