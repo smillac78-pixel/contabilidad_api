@@ -51,7 +51,6 @@ class ListExpensesUseCase:
         # 2. Cargar categorías para enriquecer la respuesta
         categories = await self._category_repo.find_by_family(input.family_id)
         category_name_map = {c.id: c.name for c in categories}
-        category_color_map = {c.id: c.color for c in categories}
 
         offset = (input.page - 1) * input.page_size
 
@@ -82,7 +81,7 @@ class ListExpensesUseCase:
                     expense_date=e.expense_date,
                     created_at=e.created_at,
                     transaction_type=e.transaction_type,
-                    color=e.color or category_color_map.get(e.category_id),
+                    color=e.color,
                 )
                 for e in items
             ],
