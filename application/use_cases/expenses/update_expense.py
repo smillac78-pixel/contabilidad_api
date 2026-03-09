@@ -67,5 +67,5 @@ class UpdateExpenseUseCase:
             expense_date=saved.expense_date,
             created_at=saved.created_at,
             transaction_type=saved.transaction_type,
-            color=saved.color,
+            color=saved.color or category.color,
         )
