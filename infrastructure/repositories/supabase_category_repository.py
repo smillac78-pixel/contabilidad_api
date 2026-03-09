@@ -63,12 +63,19 @@ class SupabaseCategoryRepository(CategoryRepository):
 
     async def delete(self, category_id: UUID) -> None:
         try:
-            await (
+            response = await (
                 self._client.table(self.TABLE)
                 .delete()
                 .eq("id", str(category_id))
                 .execute()
             )
+            error_str = str(getattr(response, "error", "") or "")
+            if "23503" in error_str or "foreign key" in error_str.lower():
+                raise DomainException(
+                    "No se puede eliminar la categoría porque tiene transacciones asociadas"
+                )
+        except DomainException:
+            raise
         except Exception as e:
             if "23503" in str(e) or "foreign key" in str(e).lower():
                 raise DomainException(

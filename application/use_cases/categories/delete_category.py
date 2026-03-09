@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from domain.exceptions import DomainException, EntityNotFoundException, UnauthorizedException
+from domain.exceptions import EntityNotFoundException, UnauthorizedException
 from domain.repositories.category_repository import CategoryRepository
 from domain.repositories.family_repository import FamilyRepository
 
@@ -26,7 +26,4 @@ class DeleteCategoryUseCase:
             raise EntityNotFoundException(f"Category {category_id} not found")
         if category.family_id != family_id:
             raise UnauthorizedException("Category does not belong to your family")
-        if category.is_system:
-            raise DomainException("System categories cannot be deleted")
-
         await self._category_repo.delete(category_id)
