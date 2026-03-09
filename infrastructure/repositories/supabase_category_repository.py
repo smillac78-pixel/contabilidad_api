@@ -3,6 +3,7 @@ from uuid import UUID
 from supabase import AsyncClient
 
 from domain.entities.category import Category
+from domain.exceptions import DomainException
 from domain.repositories.category_repository import CategoryRepository
 
 
@@ -61,12 +62,19 @@ class SupabaseCategoryRepository(CategoryRepository):
         return [self._to_entity(r) for r in response.data]
 
     async def delete(self, category_id: UUID) -> None:
-        await (
-            self._client.table(self.TABLE)
-            .delete()
-            .eq("id", str(category_id))
-            .execute()
-        )
+        try:
+            await (
+                self._client.table(self.TABLE)
+                .delete()
+                .eq("id", str(category_id))
+                .execute()
+            )
+        except Exception as e:
+            if "23503" in str(e) or "foreign key" in str(e).lower():
+                raise DomainException(
+                    "No se puede eliminar la categoría porque tiene transacciones asociadas"
+                )
+            raise
 
     @staticmethod
     def _to_entity(record: dict) -> Category:

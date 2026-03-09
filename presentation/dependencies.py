@@ -7,6 +7,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from application.use_cases.categories.create_category import CreateCategoryUseCase, ListCategoriesUseCase
 from application.use_cases.categories.delete_category import DeleteCategoryUseCase
+from application.use_cases.categories.update_category import UpdateCategoryUseCase
 from application.use_cases.expenses.create_expense import CreateExpenseUseCase
 from application.use_cases.expenses.delete_expense import DeleteExpenseUseCase
 from application.use_cases.expenses.list_expenses import ListExpensesUseCase
@@ -144,3 +145,10 @@ async def get_delete_category_use_case(
     family_repo: SupabaseFamilyRepository = Depends(get_family_repository),
 ) -> DeleteCategoryUseCase:
     return DeleteCategoryUseCase(category_repo, family_repo)
+
+
+async def get_update_category_use_case(
+    category_repo: SupabaseCategoryRepository = Depends(get_category_repository),
+    family_repo: SupabaseFamilyRepository = Depends(get_family_repository),
+) -> UpdateCategoryUseCase:
+    return UpdateCategoryUseCase(category_repo, family_repo)

@@ -13,6 +13,17 @@ class CreateCategoryInput:
 
 
 @dataclass(frozen=True)
+class UpdateCategoryInput:
+    category_id: UUID
+    family_id: UUID
+    requested_by: UUID
+    name: str
+    icon: str | None = None
+    color: str | None = None
+    transaction_type: str = "expense"
+
+
+@dataclass(frozen=True)
 class CategoryOutput:
     id: UUID
     family_id: UUID
